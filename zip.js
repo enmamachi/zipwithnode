@@ -1,6 +1,7 @@
 const { ZipFile } = require('zip-lib');
 const fs = require('fs');
 const path = require('path');
+const dialog = require('dialog');
 
 async function compressFolder(folderPath, zipFilePath, password) {
   try {
@@ -22,14 +23,20 @@ async function compressFolder(folderPath, zipFilePath, password) {
   }
 }
 
-// Konfigurasi
-const folderPath = path.join('D:', 'project', 'bukapasszip', 'b');
-const zipFilePath = path.join('D:', 'project', 'bukapasszip', 'b.zip');
-const password = 'abcd';
+// Tampilkan dialog pilihan folder
+dialog.selectFolder('Pilih Folder', (err, folderPath) => {
+  if (err) {
+    console.error('Terjadi kesalahan:', err);
+  } else {
+    // Konfigurasi
+    const zipFilePath = path.join(folderPath, 'output.zip');
+    const password = 'abcd';
 
-// Pastikan folder yang akan dikompresi ada
-if (fs.existsSync(folderPath)) {
-  compressFolder(folderPath, zipFilePath, password);
-} else {
-  console.error(`Folder tidak ditemukan: ${folderPath}`);
-}
+    // Pastikan folder yang akan dikompresi ada
+    if (fs.existsSync(folderPath)) {
+      compressFolder(folderPath, zipFilePath, password);
+    } else {
+      console.error(`Folder tidak ditemukan: ${folderPath}`);
+    }
+  }
+});
