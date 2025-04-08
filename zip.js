@@ -18,6 +18,20 @@ async function compressFolder(folderPath, zipFilePath, password) {
 
 // Konfigurasi
 const folderPath = 'D:\\project\\bukapasszip\\b'; // Ganti dengan path folder Anda
+const zipFilePath = 'D:\\project\\bukapasszip\\b.zip'; // Ganti dengan path output ZIP Anda
+const password = 'abcd'; // Ganti dengan password 4 karakter huruf kecil
+
+// Pastikan folder yang akan dikompresi ada
+if (fs.existsSync(folderPath)) {
+    compressFolder(folderPath, zipFilePath, password).catch(err => {
+        console.error('Terjadi kesalahan saat mengompres folder:', err);
+    });
+} else {
+    console.error(`Folder tidak ditemukan: ${folderPath}`);
+}
+
+// Konfigurasi
+const folderPath = 'D:\\project\\bukapasszip\\b'; // Ganti dengan path folder Anda
 const zipFilePath = 'D:\\project\\output.zip'; // Ganti dengan path output ZIP Anda
 const password = 'abcd'; // Ganti dengan password 4 karakter huruf kecil
 
