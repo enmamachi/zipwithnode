@@ -1,7 +1,9 @@
 const { ZipFile } = require('zip-lib');
 const fs = require('fs');
+const path = require('path');
 
 async function compressFolder(folderPath, zipFilePath, password) {
+  try {
     // Buat instance ZipFile
     const zip = new ZipFile();
 
@@ -13,45 +15,21 @@ async function compressFolder(folderPath, zipFilePath, password) {
 
     // Simpan zip ke file
     await zip.saveAs(zipFilePath);
+
     console.log(`Folder ${folderPath} telah dikompresi menjadi ${zipFilePath} dengan password: ${password}`);
+  } catch (err) {
+    console.error('Terjadi kesalahan saat mengompres folder:', err);
+  }
 }
 
 // Konfigurasi
-const folderPath = 'D:\\project\\bukapasszip\\b'; // Ganti dengan path folder Anda
-const zipFilePath = 'D:\\project\\bukapasszip\\b.zip'; // Ganti dengan path output ZIP Anda
-const password = 'abcd'; // Ganti dengan password 4 karakter huruf kecil
+const folderPath = path.join('D:', 'project', 'bukapasszip', 'b');
+const zipFilePath = path.join('D:', 'project', 'bukapasszip', 'b.zip');
+const password = 'abcd';
 
 // Pastikan folder yang akan dikompresi ada
 if (fs.existsSync(folderPath)) {
-    compressFolder(folderPath, zipFilePath, password).catch(err => {
-        console.error('Terjadi kesalahan saat mengompres folder:', err);
-    });
+  compressFolder(folderPath, zipFilePath, password);
 } else {
-    console.error(`Folder tidak ditemukan: ${folderPath}`);
-}
-
-// Konfigurasi
-const folderPath = 'D:\\project\\bukapasszip\\b'; // Ganti dengan path folder Anda
-const zipFilePath = 'D:\\project\\output.zip'; // Ganti dengan path output ZIP Anda
-const password = 'abcd'; // Ganti dengan password 4 karakter huruf kecil
-
-// Pastikan folder yang akan dikompresi ada
-if (fs.existsSync(folderPath)) {
-    compressFolder(folderPath, zipFilePath, password).catch(err => {
-        console.error('Terjadi kesalahan saat mengompres folder:', err);
-    });
-} else {
-    console.error(`Folder tidak ditemukan: ${folderPath}`);
-}
-
-// Konfigurasi
-const folderPath = 'D:\\project\\bukapasszip\\b'; // Ganti dengan path folder Anda
-const zipFilePath = 'D:\\project\\bukapasszip\\b.zip'; // Ganti dengan path output ZIP Anda
-const password = 'abcd'; // Ganti dengan password 4 karakter huruf kecil
-
-// Pastikan folder yang akan dikompresi ada
-if (fs.existsSync(folderPath)) {
-    compressFolder(folderPath, zipFilePath, password).catch(console.error);
-} else {
-    console.error(`Folder tidak ditemukan: ${folderPath}`);
+  console.error(`Folder tidak ditemukan: ${folderPath}`);
 }
