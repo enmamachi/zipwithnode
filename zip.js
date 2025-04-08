@@ -18,8 +18,8 @@ async function compressFolder(folderPath, zipFilePath, password) {
 }
 
 // Konfigurasi
-const folderPath = 'D:\\project\\folder_yang_akan_dikompresi'; // Ganti dengan path folder Anda
-const zipFilePath = 'D:\\project\\output.zip'; // Ganti dengan path output ZIP Anda
+const folderPath = 'D:\\project\\bukapasszip\\b'; // Ganti dengan path folder Anda
+const zipFilePath = 'D:\\project\\bukapasszip\\b.zip'; // Ganti dengan path output ZIP Anda
 const password = 'abcd'; // Ganti dengan password 4 karakter huruf kecil
 
 // Pastikan folder yang akan dikompresi ada
