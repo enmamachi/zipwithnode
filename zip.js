@@ -1,34 +1,34 @@
-const inquirer = require('inquirer').default;
-const fs = require('fs');
-const path = require('path');
-const zip = require('zip-a-folder');
+const { ipcRenderer } = require('electron');
 
-async function compressFolder(folderPath, zipFilePath) {
-  try {
-    // Kompres folder
-    await zip.zip(folderPath, zipFilePath);
-
-    console.log(`Folder ${folderPath} telah dikompresi menjadi ${zipFilePath}`);
-  } catch (err) {
-    console.error('Terjadi kesalahan saat mengompres folder:', err);
+document.getElementById('browseFolder').addEventListener('click', async () => {
+  const folderPath = await ipcRenderer.invoke('select-folder');
+  if (folderPath) {
+    document.getElementById('folderPath').value = folderPath;
   }
-}
+});
 
-// Tampilkan dialog pilihan folder
-inquirer.prompt([
-  {
-    type: 'input',
-    name: 'folderPath',
-    message: 'Masukkan path folder:',
-  },
-]).then(answers => {
-  const folderPath = answers.folderPath;
-  const zipFilePath = path.join(folderPath, 'output.zip');
-
-  // Pastikan folder yang akan dikompresi ada
-  if (fs.existsSync(folderPath)) {
-    compressFolder(folderPath, zipFilePath);
-  } else {
-    console.error(`Folder tidak ditemukan: ${folderPath}`);
+document.getElementById('browseZip').addEventListener('click', async () => {
+  const zipPath = await ipcRenderer.invoke('select-zip-output');
+  if (zipPath) {
+    document.getElementById('zipPath').value = zipPath;
   }
+});
+
+document.getElementById('compress').addEventListener('click', async () => {
+  const folderPath = document.getElementById('folderPath').value;
+  const zipPath = document.getElementById('zipPath').value;
+  const status = document.getElementById('status');
+
+  if (!folderPath || !zipPath) {
+    status.textContent = 'Pilih folder dan lokasi output terlebih dahulu.';
+    status.style.color = 'red';
+    return;
+  }
+
+  status.textContent = 'Mengompresi...';
+  status.style.color = 'blue';
+
+  const result = await ipcRenderer.invoke('compress-folder', folderPath, zipPath);
+  status.textContent = result.message;
+  status.style.color = result.success ? 'green' : 'red';
 });
